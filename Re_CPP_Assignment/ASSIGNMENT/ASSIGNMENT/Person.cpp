@@ -1,8 +1,14 @@
+#include "Merchandise.h"
 #include "Login.h"
 Person::Person(char* my_username, char* my_password,int type_t)
 {
 	strcpy(username,my_username);
 	strcpy(password,my_password);
+	type = type_t;
+}
+Person::Person(char* my_username, int type_t)
+{
+	strcpy(username, my_username);
 	type = type_t;
 }
 Person::Person()

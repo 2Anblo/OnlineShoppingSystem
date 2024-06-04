@@ -128,13 +128,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
+    <ClCompile Include="Beverage.cpp" />
+    <ClCompile Include="Book.cpp" />
+    <ClCompile Include="Cart.cpp" />
+    <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Merchandise.cpp" />
     <ClCompile Include="Person.cpp" />
+    <ClCompile Include="time.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="源.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cart.h" />
     <ClInclude Include="Login.h" />
+    <ClInclude Include="Merchandise.h" />
+    <ClInclude Include="mytime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

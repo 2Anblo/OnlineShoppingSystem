@@ -1,3 +1,4 @@
+#include "Merchandise.h"
 #include "Login.h"
 int main()
 {

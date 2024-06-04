@@ -30,9 +30,36 @@
     <ClCompile Include="User.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Merchandise.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Computer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Book.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Beverage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Cart.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="time.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Login.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Merchandise.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Cart.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mytime.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
