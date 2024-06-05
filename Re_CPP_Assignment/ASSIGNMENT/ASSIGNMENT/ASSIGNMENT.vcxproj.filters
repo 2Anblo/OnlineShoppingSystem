@@ -48,6 +48,12 @@
     <ClCompile Include="time.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Tourist.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperUser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Login.h">

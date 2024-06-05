@@ -42,7 +42,9 @@ void Admin::ReadFromFile(std::vector<Admin>& admins)
 	double dis[9];
 	for (int dis_count = 0; dis_count < 9; dis_count++)
 	{
+		
 		fin.read((char*)&dis[dis_count], sizeof(dis[dis_count]));
+		if (dis[dis_count]>0&& dis[dis_count]<=1)
 		Admin::discount[dis_count] = dis[dis_count];
 	}
 	while (fin >> admin)
@@ -82,33 +84,30 @@ void Admin::printUsername()
 {
 	std::cout << username << std::endl;
 }
-char* Admin::getusername()
-{
-	return username;
-}
-char* Admin::getpassword()
-{
-	return password;
-}
+
 void Admin::createUser()
 {
 	create_User_Menu();
 }
 void Admin::deleteUser()
 {
-	delete_User_Menu();
+	delete_User_Menu(*this);
 }
 void Admin::modifyUser()
 {
 	clearScreen();
 	char account[50];
 	bool Found_User = false;//Found User flag
+	bool Found_SuperUser = false;//Found SuperUser flag
 	std::cout << "*请输入要修改的用户名：" << std::endl;
 	std::cin >> account;
 
 	std::vector<User> users;
+	std::vector<SuperUser> superusers;
 	User temp(account);
+	SuperUser temp_superuser;
 	temp.ReadFromFile(users);
+	temp_superuser.ReadFromFile(superusers);
 	auto iter = users.begin();
 	for (; iter != users.end(); iter++)
 	{
@@ -136,12 +135,46 @@ void Admin::modifyUser()
 			break;
 		}
 	}
+	auto iter1 = superusers.begin();
+	for (; iter1 != superusers.end(); iter1++)
+	{
+		if (!strcmp(iter1->getusername(), account))
+		{
+			Found_SuperUser = true;
+			modify_User_Menu(*iter1);
+			std::vector<Cart> carts;
+			Cart temp_cart;
+			temp_cart.ReadFromFile(carts);
+			for (auto it = carts.begin(); it != carts.end();)
+			{
+				if (!strcmp(it->user.getusername(), account))
+				{
+					Found_SuperUser = true;
+					it->user = *iter1;//After erase pointer point to the next iterator
+					break;
+				}
+				else
+				{
+					it++;
+				}
+			}
+			temp_cart.WriteToFile(carts);
+			break;
+		}
+	}
 	if (Found_User)
 	{
 
 		temp.WriteToFile(users);
 		std::cout << "*成功修改用户！" << std::endl;
 	}
+	else if (Found_SuperUser)
+	{
+
+		temp_superuser.WriteToFile(superusers);
+		std::cout << "*成功修改用户！" << std::endl;
+	}
+
 	else
 	{
 		std::cout << "*修改用户失败,请重试！" << std::endl;
@@ -155,12 +188,17 @@ void Admin::searchUser()
 	clearScreen();
 	char account[50];
 	bool Found_User = false;//Found User flag
+	bool Found_SuperUser = false;//Found SuperUser Flag
 	std::cout << "*请输入要查找的用户名：" << std::endl;
 	std::cin >> account;
 
 	std::vector<User> users;
+	std::vector<SuperUser> superusers;
 	User temp(account);
+	SuperUser temp_superuser;
 	temp.ReadFromFile(users);
+	temp_superuser.ReadFromFile(superusers);
+
 	auto iter = users.begin();
 	for (; iter != users.end(); iter++)
 	{
@@ -171,10 +209,22 @@ void Admin::searchUser()
 			break;
 		}
 	}
-	if (!Found_User)
+
+	auto iter1 = superusers.begin();
+	for (; iter1 != superusers.end(); iter1++)
 	{
-		std::cout << "*查找用户失败,请重试！" << std::endl;
-		Sleep(1000);
+		if (!strcmp(iter1->getusername(), account))
+		{
+			Found_SuperUser = true;
+			iter1->printInfo();
+			break;
+		}
+	}
+	if (!Found_User&&!Found_SuperUser)
+	{
+		std::cout << "*查找用户失败,请按任意键继续！" << std::endl;
+		std::cin.ignore(100, '\n');
+		std::cin.get();
 	}
 	return;
 }
@@ -183,12 +233,16 @@ void Admin::rechargeUser()
 	clearScreen();
 	char account[50];
 	bool Found_User = false;//Found User flag
+	bool Found_SuperUser = false;//Found SuperUser flag
 	std::cout << "*请输入要充值的用户名：" << std::endl;
 	std::cin >> account;
 
+	std::vector<SuperUser>superusers;
 	std::vector<User> users;
 	User temp(account);
+	SuperUser temp_superuser;
 	temp.ReadFromFile(users);
+	temp_superuser.ReadFromFile(superusers);
 	auto iter = users.begin();
 	for (; iter != users.end(); iter++)
 	{
@@ -216,14 +270,45 @@ void Admin::rechargeUser()
 			break;
 		}
 	}
-	if (!Found_User)
+	auto superiter = superusers.begin();
+	for (; superiter != superusers.end(); superiter++)
+	{
+		if (!strcmp(superiter->getusername(), account))
+		{
+			Found_SuperUser = true;
+			superiter->recharge();
+			std::vector<Cart> carts;
+			Cart temp_cart;
+			temp_cart.ReadFromFile(carts);
+			for (auto it = carts.begin(); it != carts.end();)
+			{
+				if (!strcmp(it->user.getusername(), account))
+				{
+					Found_SuperUser = true;
+					it->user = *superiter;//After erase pointer point to the next iterator
+					break;
+				}
+				else
+				{
+					it++;
+				}
+			}
+			temp_cart.WriteToFile(carts);
+			break;
+		}
+	}
+	if (!Found_User&&!Found_SuperUser)
 	{
 		std::cout << "*用户充值失败,请重试！" << std::endl;
 		Sleep(1000);
 	}
-	else
+	else if(Found_User)
 	{
 		temp.WriteToFile(users);
+	}
+	else if (Found_SuperUser)
+	{
+		temp_superuser.WriteToFile(superusers);
 	}
 	return;
 }
@@ -710,7 +795,13 @@ void Admin::statistics()
 		// 再次跳过斜杠，然后读取日期
 		dateStream.ignore(1); // 忽略一个字符，即斜杠
 		dateStream >> day;
-		
+		if (year < 1900 ||year>2200|| month>12 || month < 1 || day>31 || day < 1)
+		{
+			std::cout << "*请按照正确格式输入！按任意键继续..." << std::endl;
+			std::cin.ignore(100, '\n');
+			std::cin.get();
+			return;
+		}
 		double sumup = 0;
 		for (auto i : bills)
 		{
@@ -826,5 +917,129 @@ void Admin::discountManage()
 		break;
 	}
 	WriteToFile(adminss);
+}
+void Admin::ManageGoodsWithCategory()
+{
+	char instruction;
+	do
+	{
+		clearScreen();
+
+		std::cout << "*欢迎进入商品分类管理模块..." << std::endl;
+		std::cout << "*1)书籍" << std::endl;
+		std::cout << "*2)计算机" << std::endl;
+		std::cout << "*3)饮料" << std::endl;
+		std::cout << "*4)返回上一页" << std::endl;
+		std::cout << "*请选择要管理的商品种类[1-4]" << std::endl;
+		std::cin >> instruction;
+		switch (instruction)
+		{
+		case '1':
+			manageBooks();
+			break;
+		case '2':
+			managePCs();
+			break;
+		case '3':
+			manageBeverages();
+			break;
+		case '4':
+			break;
+
+		default:
+			break;
+		}
+
+	} while (instruction != '4');
+}
+void Admin::ManageGoods()
+{
+	int instruction;
+	do
+	{
+		clearScreen();
+
+		std::cout << "*欢迎进入商品管理模块..." << std::endl;
+		std::cout << "*1)增加商品" << std::endl;
+		std::cout << "*2)商品列表" << std::endl;
+		std::cout << "*3)删除商品" << std::endl;
+		std::cout << "*4)上架商品" << std::endl;
+		std::cout << "*5)下架商品" << std::endl;
+		std::cout << "*6)返回上一页" << std::endl;
+		std::cout << "*请选择输入命令[1-6]" << std::endl;
+		std::string instruction_str;
+		std::cin >> instruction_str;
+		std::istringstream ins(instruction_str);
+		ins >> instruction;
+		switch (instruction)
+		{
+		case 1:
+			createGoods();
+			break;
+		case 2:
+			showgoodsList();
+			std::cout << "*按任意键继续" << std::endl;
+			std::cin.ignore(100, '\n');
+			std::cin.get();
+			break;
+		case 3:
+			deleteGoods();
+			break;
+		case 4:
+			listGoods();
+			break;
+		case 5:
+			delistGoods();
+			break;
+		case 6:
+			break;
+		default:
+			break;
+		}
+
+	} while (instruction != 6);
+}
+void Admin::ManageUsers()
+{
+	int instruction;
+	do
+	{
+		clearScreen();
+		std::cout << "*1)增加一名用户" << std::endl;
+		std::cout << "*2)删除一名用户" << std::endl;
+		std::cout << "*3)修改用户信息" << std::endl;
+		std::cout << "*4)查找用户" << std::endl;
+		std::cout << "*5)用户充值" << std::endl;
+		std::cout << "*6)返回上一页" << std::endl;
+		std::cout << "*请选择输入命令[1-6]" << std::endl;
+		std::string instruction_str;
+		std::cin >> instruction_str;
+		std::istringstream ins(instruction_str);
+		ins >> instruction;
+		switch (instruction)
+		{
+		case 1:
+			createUser();
+			break;
+		case 2:
+			deleteUser();
+			break;
+		case 3:
+			modifyUser();
+			break;
+		case 4:
+			searchUser();
+			break;
+		case 5:
+			rechargeUser();
+			break;
+		case 6:
+			break;
+		default:
+			break;
+		}
+
+	} while (instruction != 6);
+
 }
 double Admin::discount[] = { 1,1,1,0.88,0.88,0.88,0.66,0.66,0.66 };

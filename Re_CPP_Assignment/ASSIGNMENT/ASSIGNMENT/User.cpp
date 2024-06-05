@@ -14,6 +14,12 @@ User::User(char* my_username, char* my_password, char* my_contact, int my_level,
 	level = my_level;
 	balance = my_balance;
 }
+User::User(char* my_contact, int my_level, double my_balance) 
+{
+	strcpy(contact, my_contact);
+	level = my_level;
+	balance = my_balance;
+}
 User::User()
 {
 
@@ -112,14 +118,6 @@ void User::WriteToFile(std::vector<User>& users)
 		fout << *it;
 	}
 	fout.close();
-}
-char* User::getusername()
-{
-	return username;
-}
-char* User::getpassword()
-{
-	return password;
 }
 std::string User::getlevel()
 {
@@ -414,66 +412,7 @@ void User::viewGoodsWithCategory()
 		}
 
 	} while (instruction != 4);
-	//do
-	//{
-	//	clearScreen();
 
-	//	for (auto i : books)
-	//	{
-	//		i.printInfo();
-	//	}
-	//	for (auto i : PCs)
-	//	{
-	//		i.printInfo();
-	//	}
-	//	for (auto i : beverages)
-	//	{
-	//		i.printInfo();
-	//	}
-	//	std::cout << "*输入商品编号进入详情页面或输入T返回..." << std::endl;
-	//	std::cin >> Select;
-	//	if (!strcmp(Select, "T"))
-	//	{
-	//		return;
-	//	}
-	//	bool Found = false;
-	//	for (auto i : books)
-	//	{
-	//		if (!strcmp(i.getnumber(), Select))
-	//		{
-	//			Found = true;
-	//			break;
-	//		}
-
-	//	}
-	//	for (auto i : PCs)
-	//	{
-	//		if (!strcmp(i.getnumber(), Select))
-	//		{
-	//			Found = true;
-	//			break;
-	//		}
-	//	}
-	//	for (auto i : beverages)
-	//	{
-	//		if (!strcmp(i.getnumber(), Select))
-	//		{
-	//			Found = true;
-	//			break;
-	//		}
-	//	}
-	//	if (Found)
-	//	{
-	//		detailedPage(Select, *this);
-	//	}
-
-	//} while (strcmp(Select, "T"));
-	//	switch ()
-	//	{
-	//	default:
-	//		break;
-	//	}
-		
 }
 void User::viewBooks()
 {
@@ -596,4 +535,33 @@ void User::viewBeverages()
 		}
 
 	} while (strcmp(Select, "T"));
+}
+void User::viewGoods()
+{
+	char instruction;
+	do
+	{
+		clearScreen();
+
+		std::cout << "*欢迎进入商品浏览模块..." << std::endl;
+		std::cout << "*1)浏览所有商品" << std::endl;
+		std::cout << "*2)分类浏览商品" << std::endl;
+		std::cout << "*3)返回上一页" << std::endl;
+		std::cout << "*请选择输入命令[1-3]" << std::endl;
+		std::cin >> instruction;
+		switch (instruction)
+		{
+		case '1':
+			viewAllGoods();
+			break;
+		case '2':
+			viewGoodsWithCategory();
+			break;
+		case '3':
+			break;
+		default:
+			break;
+		}
+
+	} while (instruction != '3');
 }

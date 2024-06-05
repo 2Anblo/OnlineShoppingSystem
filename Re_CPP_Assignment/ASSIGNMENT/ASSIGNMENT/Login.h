@@ -14,7 +14,7 @@ class Person {
 protected:
 	char username[50];
 	char password[50];
-	int type;//Person 1 Admin 2 User 3
+	int type;//Person 1 Admin 2 User 3 SuperUser4
 public:
 	Person(char* my_username, char* my_password,int type_t);
 	Person(char* my_username, int type_t);
@@ -23,11 +23,14 @@ public:
 	virtual ~Person(){}
 	void ReadFromFile(std::vector<Person>people);
 	void WriteToFile(std::vector<Person>people);
+	char* getusername();
+	char* getpassword();
 	friend std::ifstream& operator >> (std::ifstream& in, Person& person);
 	friend std::ofstream& operator << (std::ofstream& out, Person& person);
 	friend class Cart;
 };
-class Admin :public Person {
+
+class Admin :virtual public Person {
 public:
 	Admin(char* my_username, char* my_password);
 	Admin();
@@ -36,8 +39,7 @@ public:
 	void ReadFromFile(std::vector<Admin>& admins);
 	void WriteToFile(std::vector<Admin>& admins);
 	void printUsername();//virtual
-	char* getusername();//virtual
-	char* getpassword();//virtual
+
 	void createUser();
 	void deleteUser();
 	void modifyUser();
@@ -76,13 +78,22 @@ public:
 	void showPCsList();
 	void statistics();
 	void discountManage();
+	void ManageGoodsWithCategory();
+	void ManageGoods();
+	void ManageUsers();
 	friend std::ifstream& operator >> (std::ifstream& in, Admin& admin);
 	friend std::ofstream& operator << (std::ofstream& out, Admin& admin);
 
 };
 
+class Tourist :public Person {
+public:
+	Tourist();
+	void viewGoods();
+	void viewGoodsWithCategory();
+};
 
-class User :public Person {
+class User :virtual public Person {
 protected:
 	char contact[20];
 	int level;//1 normal 2 VIP 3 VVIP
@@ -90,6 +101,7 @@ protected:
 	
 public:
 	User& operator=(const User& other);
+	User(char* my_contact, int my_level, double my_balance);
 	User(char* my_username, char* my_password,char* my_contact,int my_level,double my_balance);
 	User(char* my_username, char* my_password);
 	User(char* my_username);
@@ -98,8 +110,6 @@ public:
 	void ReadFromFile(std::vector<User>& users);
 	void WriteToFile(std::vector<User>& users);
 	double getdiscount(int goodstype);
-	char* getusername();
-	char* getpassword();
 	int getlevelnum();
 	double getbalance();
 	std::string getlevel();
@@ -116,13 +126,25 @@ public:
 	void viewBeverages();
 	void spendmoney(double money);
 	void viewGoodsWithCategory();
+	void viewGoods();
 	friend std::ifstream& operator >> (std::ifstream& in, User& user);
 	friend std::ofstream& operator << (std::ofstream& out, User& user);
 	friend class Cart;
 
 };
 
+class SuperUser :public Admin, public User {
+public:
+	SuperUser(char* my_username, char* my_password, char* my_contact, int my_level, double my_balance);
+	SuperUser(char* my_username, char* my_password);
+	SuperUser();
+	void ReadFromFile(std::vector<SuperUser>& superusers);
+	void WriteToFile(std::vector<SuperUser>& superusers);
+	friend std::ifstream& operator >> (std::ifstream& in, SuperUser& superuser);
+	friend std::ofstream& operator << (std::ofstream& out, SuperUser& superuser);
+};
 void LoginMenu();
+void tourist_menu();
 void clearScreen();//to clean up the console
 void create_Menu();
 void create_Admin_Menu();
@@ -154,6 +176,11 @@ void delist_beverages_Menu();
 void viewGoods(User& user);
 void detailedPage(char* Select,User& user);
 void AddToCart(char* Select, User& user);
+void view_cartdelete_menu(Cart& cart);
 void view_cart_menu(User& user);
-void delete_User_Menu();
+void delete_User_Menu(Admin& admin);
 void view_bill_menu(User& user);
+bool checkGoodsNumber(char* goodsnumber);
+bool checkUsersName(char* username);
+void create_SuperUser_Menu();
+void superMenu(SuperUser& superuser);

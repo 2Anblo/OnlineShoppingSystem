@@ -35,7 +35,9 @@ std::ifstream& operator >> (std::ifstream& in, Cart& cart)//Use template
 		}
 		else
 		{
+			if(cart.goods)
 			delete[]cart.goods;
+			if(cart.goodsAddCount)
 			delete[]cart.goodsAddCount;
 			cart.goods = new Merchandise[cnt];
 			cart.goodsAddCount = new int[cnt];
@@ -104,7 +106,10 @@ Cart& Cart::operator=(const Cart& other)
 {
 	if (this != &other)
 	{
+		if(goods)
 		delete[]goods;
+		if (goodsAddCount)
+			delete[]goodsAddCount;
 		user = other.user;
 		goodsCount = other.goodsCount;
 		goods = new Merchandise[goodsCount];

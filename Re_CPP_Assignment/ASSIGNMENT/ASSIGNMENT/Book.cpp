@@ -102,6 +102,10 @@ void add_Book()
 	
 	std::cout << "*请输入商品编号：" << std::endl;
 	std::cin >> my_number;
+	if (!checkGoodsNumber(my_number))
+	{
+		return;
+	}
 	std::cout << "*请输入商品名称：" << std::endl;
 	std::cin >> my_name;
 	std::cout << "*请输入商品价格：" << std::endl;
@@ -119,8 +123,9 @@ void add_Book()
 	books.push_back(temp);
 
 	temp.WriteToFile(books);
-	std::cout << "创建成功！" << std::endl;
-	Sleep(1000);
+	std::cout << "创建成功！按任意键继续..." << std::endl;
+	std::cin.ignore(100, '\n');
+	std::cin.get();
 	return;
 }
 void Book::printInfo()

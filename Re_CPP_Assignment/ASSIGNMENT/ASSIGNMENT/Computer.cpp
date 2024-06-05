@@ -149,6 +149,10 @@ void add_Computer()
 
 		std::cout << "*请输入商品编号：" << std::endl;
 		std::cin >> my_number;
+		if (!checkGoodsNumber(my_number))
+		{
+			return;
+		}
 		std::cout << "*请输入商品名称：" << std::endl;
 		std::cin >> my_name;
 		std::cout << "*请输入商品价格：" << std::endl;

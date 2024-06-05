@@ -135,7 +135,9 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Merchandise.cpp" />
     <ClCompile Include="Person.cpp" />
+    <ClCompile Include="SuperUser.cpp" />
     <ClCompile Include="time.cpp" />
+    <ClCompile Include="Tourist.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="源.cpp" />
   </ItemGroup>

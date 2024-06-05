@@ -82,3 +82,11 @@ void Person::WriteToFile(std::vector<Person>people)
 	}
 	fout.close();
 }
+char* Person::getusername()
+{
+	return username;
+}
+char* Person::getpassword()
+{
+	return password;
+}
