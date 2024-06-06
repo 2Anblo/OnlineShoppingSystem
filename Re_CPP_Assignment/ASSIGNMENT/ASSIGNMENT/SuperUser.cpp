@@ -57,11 +57,13 @@ std::ifstream& operator >> (std::ifstream& in, SuperUser& superuser)
 	char conta[20];
 	int lev;
 	double balanc;
+	int type;
 	in.read((char*)&user_i, sizeof(user_i));
 	in.read((char*)&pass, sizeof(pass));
 	in.read((char*)&conta, sizeof(conta));
 	in.read((char*)&lev, sizeof(lev));
 	in.read((char*)&balanc, sizeof(balanc));
+	in.read((char*)&type, sizeof(type));
 
 	if (in)
 	{
@@ -70,6 +72,7 @@ std::ifstream& operator >> (std::ifstream& in, SuperUser& superuser)
 		strcpy(superuser.contact, conta);
 		superuser.level = lev;
 		superuser.balance = balanc;
+		superuser.type = type;
 	}
 	return in;
 }
@@ -80,11 +83,13 @@ std::ofstream& operator << (std::ofstream& out, SuperUser& superuser)
 	char conta[20];
 	int lev;
 	double balanc;
+	int type;
 	strcpy(user_i, superuser.username);
 	strcpy(pass, superuser.password);
 	strcpy(conta, superuser.contact);
 	lev = superuser.level;
 	balanc = superuser.balance;
+	type = superuser.type;
 	if (out)
 	{
 		out.write((char*)&user_i, sizeof(user_i));
@@ -92,6 +97,20 @@ std::ofstream& operator << (std::ofstream& out, SuperUser& superuser)
 		out.write((char*)&conta, sizeof(conta));
 		out.write((char*)&lev, sizeof(lev));
 		out.write((char*)&balanc, sizeof(balanc));
+		out.write((char*)&type, sizeof(type));
 	}
 	return out;
+}
+void SuperUser::printInfo()
+{
+	clearScreen();
+	std::cout << "*用户名: " << getusername() << std::endl;
+	std::cout << "*用户密码: " << getpassword() << std::endl;
+	std::cout << "*用户等级: " << getlevel() << std::endl;
+	std::cout << "*用户联系方式: " << contact << std::endl;
+	std::cout << "*用户余额: " << std::setprecision(2) << std::setiosflags(std::ios::fixed) << balance << std::endl;
+	std::cout << std::resetiosflags(std::ios::fixed) << std::setprecision(0);
+	std::cout << "*按任意键继续" << std::endl;
+	std::cin.ignore(100, '\n');
+	std::cin.get();
 }

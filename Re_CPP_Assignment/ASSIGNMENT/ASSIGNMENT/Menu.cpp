@@ -52,36 +52,6 @@ bool checkGoodsNumber(char* goodsnumber)
 	
 	return Pass;
 }
-//void viewGoods(User& user)
-//{
-//	int instruction;
-//	do
-//	{
-//		clearScreen();
-//
-//		std::cout << "*欢迎进入商品浏览模块..." << std::endl;
-//		std::cout << "*1)浏览所有商品" << std::endl;
-//		std::cout << "*2)分类浏览商品" << std::endl;
-//		std::cout << "*3)返回上一页" << std::endl;
-//		std::cout << "*请选择输入命令[1-3]" << std::endl;
-//		std::cin >> instruction;
-//		switch (instruction)
-//		{
-//		case 1:
-//			user.viewAllGoods();
-//			break;
-//		case 2:
-//			user.viewGoodsWithCategory();
-//			
-//			break;
-//		case 3:
-//			break;
-//		default:
-//			break;
-//		}
-//
-//	} while (instruction != 3);
-//}
 void delist_beverages_Menu()
 {
 	clearScreen();
@@ -1620,7 +1590,14 @@ void view_check_menu(Cart& cart)
 			cart.user.spendmoney(cart.goods[ShoppingNum - 1].getprice() * cart.goodsAddCount[ShoppingNum - 1] * cart.user.getdiscount(cart.goods[ShoppingNum - 1].gettype_num()));
 			cart.goods[ShoppingNum - 1].sold(cart.goodsAddCount[ShoppingNum - 1]);
 			UpdateMerchandise(cart.goods[ShoppingNum - 1]);
-			UpdateUser(cart.user);
+			if (cart.user.gettype()==3)
+			{
+				UpdateUser(cart.user);
+			}
+			else if (cart.user.gettype() == 4)
+			{
+				UpdateSuperUser(cart.user);
+			}
 			cart.exportgoods(cart.goods[ShoppingNum - 1], ShoppingNum - 1);
 			
 			UpdateCart(cart);
@@ -1651,6 +1628,28 @@ void UpdateUser(User& user)
 	}
 	users.push_back(user);
 	user.WriteToFile(users);
+	return;
+}
+void UpdateSuperUser(User& user)
+{
+	std::vector<SuperUser> superusers;
+	SuperUser temp_superuser;
+	temp_superuser.ReadFromFile(superusers);
+
+	for (std::vector<SuperUser>::iterator it = superusers.begin(); it != superusers.end(); it++)
+	{
+		if (!strcmp(it->getusername(), user.getusername()))
+		{
+			temp_superuser = *it;
+			superusers.erase(it);
+			break;
+		}
+	}
+	temp_superuser.modify_money(user.getbalance());
+	temp_superuser.modify_contact(user.getcontact());
+	temp_superuser.modify_level_direct(user.getlevelnum());
+	superusers.push_back(temp_superuser);
+	temp_superuser.WriteToFile(superusers);
 	return;
 }
 void UpdateMerchandise(Merchandise& merchandise)
@@ -1732,15 +1731,26 @@ void view_bill_menu(User& user)
 	bool FoundBill = false;
 	std::cout << "*账单用户:" <<user.getusername()<<std::endl;
 	int count=1;
-	for (auto i : bills)
+	for (std::vector<Bill>::iterator iter = bills.begin(); iter != bills.end();iter++)
 	{
-		if (!strcmp(i.user.getusername(), user.getusername()))
+		if (!strcmp(iter->user.getusername(), user.getusername()))
 		{
+
 			std::cout << "*订单编号:" << count++ << std::endl;
-			i.printInfo();
+			iter->printInfo();
 			FoundBill = true;
 		}
+
 	}
+	//for (auto i : bills)
+	//{
+	//	if (!strcmp(i.user.getusername(), user.getusername()))
+	//	{
+	//		std::cout << "*订单编号:" << count++ << std::endl;
+	//		i.printInfo();
+	//		FoundBill = true;
+	//	}
+	//}
 	if (!FoundBill)
 	{
 		std::cout << "*暂无您的订单信息！" << std::endl;
@@ -1887,6 +1897,10 @@ void view_bill_menu(User& user)
 							bill_view.WriteToFile(bills);
 							break;
 						}
+						else
+						{
+							iter++;
+						}
 					}
 					else
 					{
@@ -1912,12 +1926,6 @@ void view_bill_menu(User& user)
 		}
 		
 	}
-	/*Cart cart_view(user);
-	std::vector<Cart> carts;
-	cart_view.ReadFromFile(carts);
-	FindCart(cart_view);
-	cart_view.printInfo();
-	view_check_menu(cart_view);*/
 
 }
 void tourist_menu()

@@ -284,6 +284,10 @@ double User::getbalance()
 {
 	return balance;
 }
+void User::modify_money(double money)
+{
+	balance = money;
+}
 int User::getlevelnum()
 {
 	return level;
@@ -380,7 +384,6 @@ void User::viewGoodsWithCategory()
 	temp_computer.ReadFromFile(PCs);
 	temp_beverage.ReadFromFile(beverages);
 
-	char Select[10];
 	int instruction;
 	do
 	{
@@ -564,4 +567,16 @@ void User::viewGoods()
 		}
 
 	} while (instruction != '3');
+}
+void User::modify_level_direct(int my_level)
+{
+	level = my_level;
+}
+void User::modify_contact(char* my_contact)
+{
+	strcpy(contact, my_contact);
+}
+char* User::getcontact()
+{
+	return contact;
 }

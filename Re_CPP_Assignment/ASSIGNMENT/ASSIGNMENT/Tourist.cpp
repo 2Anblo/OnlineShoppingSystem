@@ -47,7 +47,6 @@ void Tourist::viewGoodsWithCategory()
 	temp_computer.ReadFromFile(PCs);
 	temp_beverage.ReadFromFile(beverages);
 
-	char Select[10];
 	char instruction;
 	do
 	{

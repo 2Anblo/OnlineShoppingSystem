@@ -16,6 +16,10 @@ Person::Person()
 
 }
 
+int Person::gettype()
+{
+	return type;
+}
 std::ifstream& operator >> (std::ifstream& in, Person& person)//Must With Cite
 {
 	char user[50];
@@ -89,4 +93,14 @@ char* Person::getusername()
 char* Person::getpassword()
 {
 	return password;
+}
+void Person::printInfo()
+{
+	clearScreen();
+	std::cout << "*管理员名: " << getusername() << std::endl;
+	std::cout << "*管理员密码: " << getpassword() << std::endl;
+
+	std::cout << "*按任意键继续" << std::endl;
+	std::cin.ignore(100, '\n');
+	std::cin.get();
 }

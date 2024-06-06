@@ -21,10 +21,12 @@ public:
 
 	Person();
 	virtual ~Person(){}
+	virtual void printInfo();
 	void ReadFromFile(std::vector<Person>people);
 	void WriteToFile(std::vector<Person>people);
 	char* getusername();
 	char* getpassword();
+	int gettype();
 	friend std::ifstream& operator >> (std::ifstream& in, Person& person);
 	friend std::ofstream& operator << (std::ofstream& out, Person& person);
 	friend class Cart;
@@ -39,7 +41,7 @@ public:
 	void ReadFromFile(std::vector<Admin>& admins);
 	void WriteToFile(std::vector<Admin>& admins);
 	void printUsername();//virtual
-
+	virtual void printInfo();
 	void createUser();
 	void deleteUser();
 	void modifyUser();
@@ -109,14 +111,18 @@ public:
 	virtual ~User() {}
 	void ReadFromFile(std::vector<User>& users);
 	void WriteToFile(std::vector<User>& users);
+	void modify_money(double money);
+	void modify_level_direct(int my_level);
+	void modify_contact(char* my_contact);
 	double getdiscount(int goodstype);
 	int getlevelnum();
 	double getbalance();
+	char* getcontact();
 	std::string getlevel();
 	void modify_level();
 	void modify_contact();
 	void modify_password();
-	void printInfo();
+	virtual void printInfo();
 	void recharge();
 	void viewAllGoods();
 	void viewBills();
@@ -138,11 +144,14 @@ public:
 	SuperUser(char* my_username, char* my_password, char* my_contact, int my_level, double my_balance);
 	SuperUser(char* my_username, char* my_password);
 	SuperUser();
+	virtual ~SuperUser(){}
+	virtual void printInfo();
 	void ReadFromFile(std::vector<SuperUser>& superusers);
 	void WriteToFile(std::vector<SuperUser>& superusers);
 	friend std::ifstream& operator >> (std::ifstream& in, SuperUser& superuser);
 	friend std::ofstream& operator << (std::ofstream& out, SuperUser& superuser);
 };
+
 void LoginMenu();
 void tourist_menu();
 void clearScreen();//to clean up the console
@@ -184,3 +193,4 @@ bool checkGoodsNumber(char* goodsnumber);
 bool checkUsersName(char* username);
 void create_SuperUser_Menu();
 void superMenu(SuperUser& superuser);
+void UpdateSuperUser(User& user);

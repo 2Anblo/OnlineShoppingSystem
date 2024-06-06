@@ -28,20 +28,20 @@ std::ifstream& operator >> (std::ifstream& in, Cart& cart)//Use template
 	{
 		cart.goodsCount = cnt;
 		in >> cart.user;
-		if (!cart.goods)
-		{
+		//if (!cart.goods)
+		//{
 			cart.goodsAddCount = new int[cnt];
 			cart.goods = new Merchandise[cnt];
-		}
-		else
-		{
-			if(cart.goods)
-			delete[]cart.goods;
-			if(cart.goodsAddCount)
-			delete[]cart.goodsAddCount;
-			cart.goods = new Merchandise[cnt];
-			cart.goodsAddCount = new int[cnt];
-		}
+		//}
+		//else
+		//{
+		//	if(cart.goods)
+		//	delete[]cart.goods;
+		//	if(cart.goodsAddCount)
+		//	delete[]cart.goodsAddCount;
+		//	cart.goods = new Merchandise[cnt];
+		//	cart.goodsAddCount = new int[cnt];
+		//}
 		for (size_t i=0; i < cnt; i++)
 		{
 
@@ -106,10 +106,7 @@ Cart& Cart::operator=(const Cart& other)
 {
 	if (this != &other)
 	{
-		if(goods)
-		delete[]goods;
-		if (goodsAddCount)
-			delete[]goodsAddCount;
+
 		user = other.user;
 		goodsCount = other.goodsCount;
 		goods = new Merchandise[goodsCount];
