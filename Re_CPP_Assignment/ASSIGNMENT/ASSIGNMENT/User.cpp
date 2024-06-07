@@ -140,7 +140,7 @@ std::string User::getlevel()
 }
 void User::modify_level()
 {
-	int new_level;
+	char new_level;
 	bool correct_input=false;
 	do
 	{
@@ -149,16 +149,16 @@ void User::modify_level()
 		std::cin >> new_level;
 		switch (new_level)
 		{
-		case 1:
-			level = new_level;
+		case '1':
+			level = new_level-'0';
 			correct_input = true;
 			break;
-		case 2:
-			level = new_level;
+		case '2':
+			level = new_level-'0';
 			correct_input = true;
 			break;
-		case 3:
-			level = new_level;
+		case '3':
+			level = new_level-'0';
 			correct_input = true;
 			break;
 		default:

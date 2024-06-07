@@ -1326,7 +1326,7 @@ void AddToCart(char* Select,User& user)
 	temp_computer.ReadFromFile(PCs);
 	temp_beverage.ReadFromFile(beverages);
 	temp_cart.ReadFromFile(CARTs);
-	
+	std::cout << std::setprecision(0) << std::setiosflags(std::ios::fixed);
 	for (auto i : books)
 	{
 		if (!strcmp(i.getnumber(), Select))
@@ -1357,7 +1357,7 @@ void AddToCart(char* Select,User& user)
 					Sleep(750);
 					break;
 				case 2:
-					std::cout << "*您为" << user.getlevel() << "在本商城购物享受88折优惠!" << std::endl;
+					std::cout << "*您为" << user.getlevel() << "在本商城购物享受"<< std::setprecision(0) << std::setiosflags(std::ios::fixed)<<(1-Admin::discount[3])*100<<"%优惠!" << std::endl;
 					std::cout << "*请输入您要购买的商品件数..." << std::endl;
 					std::cin >> goodscount;
 					cart.addgoods(i,goodscount);
@@ -1365,7 +1365,7 @@ void AddToCart(char* Select,User& user)
 					Sleep(750);
 					break;
 				case 3:
-					std::cout << "*您为" << user.getlevel() << "在本商城购物享受66折优惠!" << std::endl;
+					std::cout << "*您为" << user.getlevel() << "在本商城购物享受"<< std::setprecision(0) << std::setiosflags(std::ios::fixed) << (1-Admin::discount[6])*100<<"%优惠!" << std::endl;
 					std::cout << "*请输入您要购买的商品件数..." << std::endl;
 					std::cin >> goodscount;
 					cart.addgoods(i, goodscount);
@@ -1409,7 +1409,7 @@ void AddToCart(char* Select,User& user)
 					Sleep(750);
 					break;
 				case 2:
-					std::cout << "*您为" << user.getlevel() << "在本商城购物享受88折优惠!" << std::endl;
+					std::cout << "*您为" << user.getlevel() << "在本商城购物享受"<< std::setprecision(0) << std::setiosflags(std::ios::fixed) << (1 - Admin::discount[4]) * 100 << "%优惠!" << std::endl;
 					std::cout << "*请输入您要购买的商品件数..." << std::endl;
 					std::cin >> goodscount;
 					cart.addgoods(i, goodscount);
@@ -1417,7 +1417,7 @@ void AddToCart(char* Select,User& user)
 					Sleep(750);
 					break;
 				case 3:
-					std::cout << "*您为" << user.getlevel() << "在本商城购物享受66折优惠!" << std::endl;
+					std::cout << "*您为" << user.getlevel() << "在本商城购物享受" << std::setprecision(0) << std::setiosflags(std::ios::fixed) << (1 - Admin::discount[7]) * 100 << "%优惠!" << std::endl;
 					std::cout << "*请输入您要购买的商品件数..." << std::endl;
 					std::cin >> goodscount;
 					cart.addgoods(i, goodscount);
@@ -1460,7 +1460,7 @@ void AddToCart(char* Select,User& user)
 					Sleep(750);
 					break;
 				case 2:
-					std::cout << "*您为" << user.getlevel() << "在本商城购物享受88折优惠!" << std::endl;
+					std::cout << "*您为" << user.getlevel() << "在本商城购物享受" << std::setprecision(0) << std::setiosflags(std::ios::fixed) << (1 - Admin::discount[5]) * 100 << "%优惠!" << std::endl;
 					std::cout << "*请输入您要购买的商品件数..." << std::endl;
 					std::cin >> goodscount;
 					cart.addgoods(i, goodscount);
@@ -1468,7 +1468,7 @@ void AddToCart(char* Select,User& user)
 					Sleep(750);
 					break;
 				case 3:
-					std::cout << "*您为" << user.getlevel() << "在本商城购物享受66折优惠!" << std::endl;
+					std::cout << "*您为" << user.getlevel() << "在本商城购物享受" << std::setprecision(0) << std::setiosflags(std::ios::fixed) << (1 - Admin::discount[8]) * 100 << "%优惠!" << std::endl;
 					std::cout << "*请输入您要购买的商品件数..." << std::endl;
 					std::cin >> goodscount;
 					cart.addgoods(i, goodscount);
@@ -1483,6 +1483,7 @@ void AddToCart(char* Select,User& user)
 			break;
 		}
 	}
+	std::cout << std::setprecision(0)<<std::resetiosflags(std::ios::fixed);
 	std::vector<Cart>::iterator iter = CARTs.begin();
 	bool Foundcart = false;
 	for (; iter != CARTs.end(); iter++)
